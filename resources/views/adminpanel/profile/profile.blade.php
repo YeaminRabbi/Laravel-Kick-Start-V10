@@ -34,13 +34,7 @@
                                 value="{{ $user->name }}" name="name" disabled />
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="basic-default-phone" placeholder="017*******"
-                                value="{{ $user->phone }}" name="phone" disabled />
-                        </div>
-                    </div>
+                   
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-email">Email</label>
                         <div class="col-sm-10">
@@ -52,18 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-phone">Gender</label>
-                        <div class="col-sm-10">
-                            <select class="form-select" id="exampleFormControlSelect1"
-                                aria-label="Default select example" disabled>
-                                <option selected>Open this select menu</option>
-                                <option value="male" @if ($user->gender == 'male') selected @endif>Male</option>
-                                <option value="female" @if ($user->gender == 'female') selected @endif>Female</option>
-                                <option value="others" @if ($user->gender == 'others') selected @endif>others</option>
-                            </select>
-                        </div>
-                    </div>
+                   
                     <div class="row justify-content-end">
                         <div class="col-sm-10">
                             <a href="{{ route('profile_edit') }}">

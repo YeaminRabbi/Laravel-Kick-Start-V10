@@ -11,7 +11,7 @@ class ProfileController extends Controller
 {
     function profile()
     {
-        return view('adminpanel.profile.index',[
+        return view('adminpanel.profile.profile',[
             'user'=> Auth::user()
         ]);
     }
@@ -28,18 +28,15 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'gender' => 'required',            
         ]);
 
         $user = Auth::user();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone =  $request->phone ?? null;
-        $user->gender =  $request->gender ?? null;
+       
             
         if(isset($request->password)){
             $user->password =  Hash::make($request->password);
-            $user->pass =  $request->password;
         }
         $user->save();
 

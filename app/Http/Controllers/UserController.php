@@ -48,7 +48,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|string',
             'password' => 'required|string', 
-            'file' => 'required',   
+            'file' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',   
             'role' => 'required'       
         ]);
 
@@ -56,24 +56,29 @@ class UserController extends Controller
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone = $request->phone?? null;
         $user->password = Hash::make($request->password);
         $user->save();
 
-        if($request->hasFile('file')){
-            foreach ($request->file('file') as $file) {
-                Storage::putFile('public/images/users/',$file);
-                $location ='public/images/users/'.$file->hashName();
-    
-                $image = new Image();
-                $image->url = $location;
-                $image->type = $file->extension();
-                $image->parentable_id = $user->id;
-                $image->parentable_type = User::class;
-                $image->save();
-            }
+
+        // using Morph Relation for image with IMAGE Model
+        if ($request->hasFile('file')) {
             
-        }   
+            $location_name = 'images/users/'; //change folder name according to the MODEL
+
+            $file = $request->file('file');
+            $name = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = env('PUBLIC_FILE_LOCATION') ? public_path('../'.$location_name ) : public_path($location_name );
+            $file->move($destinationPath, $name);
+            $location = $location_name . $name;
+
+            $image = new Image();
+            $image->url = $location;
+            $image->type = $file->getClientOriginalExtension();
+            $image->parentable_id = $user->id;     //change varibale according to the MODEL
+            $image->parentable_type = User::class; //change class name according to the MODEL
+            $image->save();
+            
+        }
         
         $user->assignRole($request->role);
         return back()->with('success', 'You have successfully added user!');       
@@ -98,7 +103,6 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        // return
         $user = User::with('image','roles')->find($id);
         return view('adminpanel.users.edit', compact('user'));
     }
@@ -115,43 +119,49 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|string',
+            'file' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',   
         ]);
 
         
         $user = User::with('images')->find($id);
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->phone = $request->phone ?? null;
+      
 
         if(isset($request->password)){
             $user->password = Hash::make($request->password);
         }
-        $user->save();
 
-        if($request->hasFile('file')){
-            foreach ($user->images as $image) {
-                if (File::exists($image->url)) {
-                    unlink($image->url);
+        if ($request->hasFile('file')) {
+
+            $location_name = 'images/users/'; //change folder name according to the MODEL
+
+            $file = $request->file('file');
+            $name = time() . '.' . $file->getClientOriginalExtension();
+            $destinationPath = env('PUBLIC_FILE_LOCATION') ? public_path('../'.$location_name) : public_path($location_name);
+            $file->move($destinationPath, $name);
+            $location = $location_name . $name;
+            
+            if ($user->image) {
+                
+                if (file_exists(public_path($user->image->url))) {
+                    unlink(public_path($user->image->url));
                 }
-                $image->delete();
-            }
-
-            foreach ($request->file('file') as $file) {               
-
-
-                Storage::putFile('public/storage/images/users/',$file);
-                $location ='public/storage/images/users/'.$file->hashName();
-    
+                
+                $user->image->url = $location;
+                $user->image->save();
+            } else {
                 $image = new Image();
                 $image->url = $location;
-                $image->type = $file->extension();
+                $image->type = $file->getClientOriginalExtension();
                 $image->parentable_id = $user->id;
                 $image->parentable_type = User::class;
                 $image->save();
             }
-            
-        }   
-        
+        }
+
+        $user->save();
+
         $user->assignRole($request->role);
         return back()->with('success', 'You have successfully added user!');    
     }
@@ -164,6 +174,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user= User::find($id);
+        $user->delete();
+        return back()->with('success', 'You have successfully deleted user!');
     }
 }

@@ -15,6 +15,11 @@
           </div>
       </div>
     @endif
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger">{{ $error }}</div>
+        @endforeach
+    @endif
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User / </span> Edit</h4>
     <div class="row">
         <div class="col-xxl">
@@ -41,23 +46,13 @@
                                     name="email" value="{{ $user->email ?? '' }}" required />
                             </div>
                         </div>
-                        
-                       
+                    
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone <span style="color: red;">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="basic-default-phone" placeholder="Enter Phone"
-                                    name="phone" value="{{ $user->phone  ?? ''}}" />
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-
                             <div class="col-md-6">
                                 <div class="row">
                                     <label class="col-sm-4 col-form-label" for="basic-default-image">Image </label>
                                     <div class="col-sm-8">
-                                        <input type="file" class="form-control" id="basic-default-image" name="file[]" multiple />
+                                        <input type="file" class="form-control" id="basic-default-image" name="file"/>
                                         <span style="font-weight: 800; color:red">(Upload if you want to change image)</span>
                                     </div>
                                 </div>
@@ -66,7 +61,7 @@
                                 <div class="row">
                                     <label class="col-sm-2 col-form-label" for="basic-default-image2">Preview Image</label>
                                     <div class="col-sm-10">
-                                        <img src="{{ Storage::url($user->image->url ?? '')  }}" alt="User Image" style="max-width:250px;">
+                                        <img src="{{ asset($user->image->url ?? '')  }}" alt="User Image" style="max-width:250px;">
                                     </div>
                                 </div>
                             </div>

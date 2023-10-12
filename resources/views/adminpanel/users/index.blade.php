@@ -49,7 +49,7 @@
                     <tr>
                         <td>{{ $key+1 }}</td>
                         <td>
-                            <img src="{{ Storage::url($data->image->url ?? '' ) }}" alt="User Image" style="max-width: 100px;max-height:80px;">
+                            <img src="{{ asset($data->image->url ?? '' ) }}" alt="User Image" style="max-width: 100px;max-height:80px;">
                         </td>
                         <td>{{ $data->name }}</td>
                         <td>{{ $data->getRoleNames()[0] ?? 'user' }}</td>
@@ -59,13 +59,13 @@
                         
                         <td>
                             <a href="{{ route('users.edit', $data->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>  
-                            <a href="{{ route('users.destroy', $data->id) }}" onclick="event.preventDefault(); document.getElementById('delete-form-{{ $key }}').submit();"
-                                class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>
-                                <form id="delete-form-{{ $key }}" action="{{route('users.destroy', $data->id)}}" method="POST" style="display: none;">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>                        
+                            <a href="#" onclick="if(!confirm('Are you sure you want to delete this user?')){event.preventDefault();}else{document.getElementById('delete-form-{{ $key }}').submit();}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></i>
                             </a>
+
+                            <form id="delete-form-{{ $key }}" action="{{route('users.destroy', $data->id)}}" method="POST" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </td>
                     </tr>
                     @endforeach

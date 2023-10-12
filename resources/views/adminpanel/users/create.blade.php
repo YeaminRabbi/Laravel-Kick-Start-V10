@@ -15,6 +15,12 @@
           </div>
       </div>
     @endif
+
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger">{{ $error }}</div>
+        @endforeach
+    @endif
     <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">User / </span> Create</h4>
     <div class="row">
         <div class="col-xxl">
@@ -41,13 +47,7 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone <span style="color: red;">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="basic-default-phone" placeholder="Enter Phone"
-                                    name="phone" />
-                            </div>
-                        </div>
+                       
 
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="basic-default-password">Password <span style="color: red;">*</span></label>
@@ -57,30 +57,30 @@
                             </div>
                         </div>
 
-
-                       
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-image">Image</label>
-                            <div class="col-sm-10">
-                                <input type="file" class="form-control" id="basic-default-image" name="file[]" multiple  required/>
-                            </div>
-                        </div>  
-
-
-                        <div class="row mb-3">
-                            <label for="asd1" class="col-sm-2 form-label">Role</label>
+                            <label for="asd1" class="col-sm-2 form-label">Role <span style="color: red;">*</span></label>
                             <div class="col-sm-10">
 
                                 <select class="form-select" id="asd1" name="role" required>
                                     <option selected disabled>--select role--</option>
                                     @if ($roles->isNotEmpty())
-                                    @foreach ($roles as $data)
-                                    <option value="{{ $data->id }}">{{$data->name}}</option>                                        
-                                    @endforeach
+                                        @foreach ($roles as $data)
+                                            <option value="{{ $data->id }}">{{$data->name}}</option>                                        
+                                        @endforeach
                                     @endif
                                 </select>
                             </div>
                         </div>
+                       
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-image">Image</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="basic-default-image" name="file"/>
+                            </div>
+                        </div>  
+
+
+                        
 
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
