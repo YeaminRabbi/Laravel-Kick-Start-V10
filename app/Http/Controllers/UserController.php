@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use Toastr;
 class UserController extends Controller
 {
     /**
@@ -81,7 +81,8 @@ class UserController extends Controller
         }
         
         $user->assignRole($request->role);
-        return back()->with('success', 'You have successfully added user!');       
+        Toastr::success("User Created Successfully");
+        return back();       
     }
 
     /**
@@ -119,7 +120,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|string',
-            'file' => 'nullable|mimes:jpeg,jpg,png,gif|max:10000',   
+            'file' => 'nullable|mimes:jpeg,jpg,png',   
         ]);
 
         
@@ -163,7 +164,9 @@ class UserController extends Controller
         $user->save();
 
         $user->assignRole($request->role);
-        return back()->with('success', 'You have successfully added user!');    
+
+        Toastr::success("User Updated Successfully");
+        return back();    
     }
 
     /**
@@ -176,6 +179,8 @@ class UserController extends Controller
     {
         $user= User::find($id);
         $user->delete();
-        return back()->with('success', 'You have successfully deleted user!');
+
+        Toastr::success('User Deleted Successfully');
+        return back();
     }
 }

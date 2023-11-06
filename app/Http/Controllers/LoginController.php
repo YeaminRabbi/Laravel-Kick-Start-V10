@@ -7,21 +7,22 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
+use Toastr;
 class LoginController extends Controller
 {
     function LOGIN(Request $req)
     {
 
-            $req->validate([
-                'email' => 'required|email',
-                'password' => 'required'
-            ]);
+        $req->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
 
         $remember_me = $req->has('remember_me') ? true : false;
         if (Auth::attempt(array('email' => $req->email, 'password' => $req->password), $remember_me)) {
 
             if(Auth::user()->hasRole('admin')){
+                Toastr::success('Login Successfully');
                 return redirect()->route('admin_dashboard');
             }else if(Auth::user()->hasRole('user')){
                 Auth::logout();
