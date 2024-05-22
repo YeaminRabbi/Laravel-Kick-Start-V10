@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Toastr;
+
 class UserController extends Controller
 {
     /**
@@ -81,7 +81,7 @@ class UserController extends Controller
         }
         
         $user->assignRole($request->role);
-        Toastr::success("User Created Successfully");
+        toastr()->success("User Created Successfully");
         return back();       
     }
 
@@ -165,7 +165,7 @@ class UserController extends Controller
 
         $user->assignRole($request->role);
 
-        Toastr::success("User Updated Successfully");
+        toastr()->success("User Updated Successfully");
         return back();    
     }
 
@@ -180,7 +180,7 @@ class UserController extends Controller
         $user= User::find($id);
         $user->delete();
 
-        Toastr::success('User Deleted Successfully');
+        toastr()->success('User Deleted Successfully');
         return back();
     }
 }

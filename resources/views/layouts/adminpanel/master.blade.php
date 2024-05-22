@@ -37,8 +37,6 @@
         integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
     <!-- Page CSS -->
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
-    
     <!-- Helpers -->
     <script src="/AdminPanelAsset/vendor/js/helpers.js"></script>
     <script src="/AdminPanelAsset/js/config.js"></script>
@@ -253,9 +251,7 @@
     {{-- Vue 3 js --}}
     {{-- <script src="{{ mix('js/app.js') }}"></script> --}}
     <script src="https://unpkg.com/axios/dist/axios.min.js" defer></script>
-
-    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-    {!! Toastr::message() !!}
+   
     @yield('footer_js')
 </body>
 
